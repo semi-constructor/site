@@ -61,8 +61,13 @@ body::-webkit-scrollbar {
 
 /* Text outline utility */
 .text-outline {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.06);
   color: transparent;
+}
+
+/* Noise overlay sits above content at a lower opacity */
+.bg-noise {
+  opacity: 0.035;
 }
 
 /* Lenis smooth scroll fix */

@@ -4,64 +4,78 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { LiquidGlass } from "@/components/ui/LiquidGlass";
+
+const links = [
+  { name: "Home",         href: "/" },
+  { name: "Work",         href: "/projects" },
+  { name: "Capabilities", href: "/skills" },
+];
 
 export function NavBar() {
   const pathname = usePathname();
 
-  const links = [
-    { name: "Home", href: "/" },
-    { name: "Work", href: "/projects" },
-    { name: "Capabilities", href: "/skills" },
-  ];
-
   return (
-    <motion.nav 
-      initial={{ y: -100, opacity: 0 }}
+    <motion.div
+      initial={{ y: -72, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-12 py-6 mix-blend-difference text-white"
+      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
     >
-      <Link href="/" className="font-bold text-xl tracking-[0.1em] uppercase relative group overflow-hidden">
-        <motion.span 
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="block"
-        >
-          Semiconstructor.
-        </motion.span>
-      </Link>
-      
-      <div className="flex gap-8">
-        {links.map((link, i) => {
-          const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-          return (
-            <div key={link.name} className="overflow-hidden">
-              <motion.div
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 1, delay: 0.2 + (i * 0.1), ease: [0.16, 1, 0.3, 1] }}
+      {/* Outer glass pill — low distortion, strong specular */}
+      <LiquidGlass
+        className="rounded-2xl pointer-events-auto"
+        distortion={6}
+        noiseFrequency={0.025}
+      >
+        <nav className="flex items-center gap-1 px-3 py-2">
+
+          {/* Brand */}
+          <Link
+            href="/"
+            className="mr-3 px-2 py-1 text-[12px] font-bold tracking-[0.18em] uppercase text-white/80 hover:text-white transition-colors duration-200 select-none whitespace-nowrap"
+          >
+            Semi.
+          </Link>
+
+          {/* Divider */}
+          <div className="w-px h-4 bg-white/15 mr-1" />
+
+          {/* Nav items */}
+          {links.map((link) => {
+            const isActive =
+              pathname === link.href ||
+              (link.href !== "/" && pathname.startsWith(link.href));
+
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={cn(
+                  "relative px-4 py-2 text-[11px] font-bold tracking-[0.12em] uppercase rounded-xl transition-colors duration-200 z-10 whitespace-nowrap",
+                  isActive ? "text-white" : "text-white/40 hover:text-white/70"
+                )}
               >
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "relative text-sm font-bold tracking-[0.15em] uppercase transition-colors hover:text-white/70",
-                    isActive ? "text-white" : "text-white/50"
-                  )}
-                >
-                  {link.name}
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-dot"
-                      className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white"
-                    />
-                  )}
-                </Link>
-              </motion.div>
-            </div>
-          );
-        })}
-      </div>
-    </motion.nav>
+                {/* Active indicator: glass-inside-glass */}
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-active-pill"
+                    className="absolute inset-0 rounded-xl -z-10"
+                    style={{
+                      background: "rgba(255,255,255,0.14)",
+                      boxShadow:
+                        "inset 0 1.5px 0 rgba(255,255,255,0.55), inset 0 -1px 0 rgba(0,0,0,0.15)",
+                      border: "1px solid rgba(255,255,255,0.22)",
+                    }}
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                {link.name}
+              </Link>
+            );
+          })}
+        </nav>
+      </LiquidGlass>
+    </motion.div>
   );
 }

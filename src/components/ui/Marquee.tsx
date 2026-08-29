@@ -14,15 +14,15 @@ export function Marquee() {
   const items = [...words, ...words, ...words, ...words];
 
   return (
-    <div className="relative w-screen left-1/2 -translate-x-1/2 flex overflow-x-hidden border-y border-border py-6 bg-black z-10">
-      <motion.div 
-        className="flex whitespace-nowrap text-3xl md:text-5xl font-bold uppercase tracking-[0.2em] text-muted-foreground/30"
+    <div className="relative w-screen left-1/2 -translate-x-1/2 flex overflow-x-hidden border-y border-white/[0.06] py-5 bg-black z-10">
+      <motion.div
+        className="flex whitespace-nowrap text-2xl md:text-3xl font-black uppercase tracking-[0.25em] text-white/[0.07]"
         animate={{ x: ["0%", "-50%"] }}
-        transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
+        transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
       >
         {items.map((item, i) => (
-          <span key={i} className="mx-6 md:mx-12">
-            {item === "•" ? <span className="text-primary/20">{item}</span> : item}
+          <span key={i} className="mx-8 md:mx-14">
+            {item === "•" ? <span className="text-white/20">{item}</span> : item}
           </span>
         ))}
       </motion.div>
